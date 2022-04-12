@@ -9,18 +9,12 @@ from strawberry.fastapi import GraphQLRouter
 from strawberry.types import Info
 
 
-def custom_context_dependency() -> str:
-    return "John"
-
-
 def get_redis():
     yield redis.Redis(host="localhost", port=6379, db=0, decode_responses=True)
 
 
-async def get_context(
-    custom_value=Depends(custom_context_dependency), redis=Depends(get_redis)
-):
-    return {"custom_value": custom_value, "redis": redis}
+async def get_context(redis=Depends(get_redis)):
+    return {"redis": redis}
 
 
 @strawberry.type
@@ -53,10 +47,6 @@ def get_books(info: Info):
 class Query:
     books: typing.List[Book] = strawberry.field(resolver=get_books)
     book: Book = strawberry.field(resolver=get_book)
-
-    @strawberry.field
-    def example(self, info: Info) -> str:
-        return f"Hello {info.context['custom_value']}"
 
 
 @strawberry.type
