@@ -1,4 +1,4 @@
-from rouge_redis import __version__
+from graphql_redis import __version__
 
 
 def test_version():
