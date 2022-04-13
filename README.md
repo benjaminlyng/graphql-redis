@@ -24,3 +24,4 @@ To lookup the list of books written by an author a set is used in redis, again u
 ## TODOs:
 * Make mypy happy (as if...)
 * Add tests
+* Use redisgears to write each change to redisstreams
