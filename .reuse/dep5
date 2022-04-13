@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: graphql-redis
+Upstream-Contact: Benjamin Lyng Jørgensen <benjamin@lyng.space>
+Source: https://github.com/benjaminlyng/graphql-redis
+
+Files: *.py *.gitignore *.md *.yaml *.toml *.lock
+Copyright: $YEAR $NAME <$CONTACT>
+License: GPL-3.0-or-later

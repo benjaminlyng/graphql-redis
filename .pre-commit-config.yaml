@@ -23,3 +23,7 @@ repos:
 #     rev: 'v0.942'
 #     hooks:
 #     -   id: mypy
+-   repo: https://github.com/fsfe/reuse-tool
+    rev: v0.9.0
+    hooks:
+    - id: reuse
