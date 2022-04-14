@@ -90,13 +90,18 @@ class Mutation:
         info: Info,
     ) -> Book:
         r: redis.Redis = info.context["redis"]
-
-        r.hset(f"Book:{id}", mapping={"author": author_id, "title": title})
-        if not r.exists(f"Author:{author_id}"):
-            r.hset(
-                f"Author:{author_id}", mapping={"id": author_id, "name": author_name}
-            )
-        r.sadd(f"BooksByAuthor:{author_id}", id)
+        author_exists = r.exists(f"Author:{author_id}")
+        with r.pipeline() as p:
+            p.hset(f"Book:{id}", mapping={"author": author_id, "title": title})
+            if not author_exists:
+                p.hset(
+                    f"Author:{author_id}",
+                    mapping={"id": author_id, "name": author_name},
+                )
+                p.xadd("Author:create", {"id": author_id})
+            p.sadd(f"BooksByAuthor:{author_id}", id)
+            p.xadd("Book:create", {"id": id})
+            p.execute()
         return Book(id=id, title=title, author=Author(id=author_id, name=author_name))
 
 
